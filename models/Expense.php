@@ -32,12 +32,11 @@ class Expense extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'amount', 'month', 'createdAt', 'isPaid'], 'required'],
+            [['name', 'amount'], 'required'],
             [['source', 'createdAt', 'isPaid'], 'integer'],
             [['amount'], 'number'],
-            [['expenseDate'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['month'], 'string', 'max' => 15],
+            [['month'], 'default', 'value' => date('F')]
         ];
     }
 

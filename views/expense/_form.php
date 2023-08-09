@@ -21,6 +21,7 @@ use app\models\Sources;
     ) ?>
 
     <?= $form->field($model, 'amount')->textInput() ?>
+    <?= $form->radioButton ?>
 
     <?= $form->field($model, 'month')->textInput(['maxlength' => true]) ?>
 
