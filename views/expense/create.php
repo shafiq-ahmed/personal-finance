@@ -13,6 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Expenses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="expense-create">
+<!--Show flash error message if formdata insertion fails -->
+    <?= \app\widgets\Alert::widget()?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 

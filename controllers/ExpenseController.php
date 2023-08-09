@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Expense;
 use app\models\ExpenseSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,10 +70,20 @@ class ExpenseController extends Controller
     {
         $model = new Expense();
 
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            //if post request successfully loaded
+            //and model is successfully saved
+            //redirect to view page
+            try{
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+
+            }catch (\Throwable $modelSaveError){
+                Yii::$app->session->setFlash('danger',$modelSaveError->getMessage());
             }
+
         } else {
             $model->loadDefaultValues();
         }
