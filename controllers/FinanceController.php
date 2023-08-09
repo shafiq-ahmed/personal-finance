@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Expense;
+
 class FinanceController extends \yii\web\Controller
 {
     public function actionEarning()
@@ -11,7 +13,10 @@ class FinanceController extends \yii\web\Controller
 
     public function actionExpense()
     {
-        return $this->render('expense');
+        $model= new Expense();
+        return $this->render('expense',[
+            'model'=>$model
+        ]);
     }
 
     public function actionTransactionSource()
