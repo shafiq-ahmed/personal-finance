@@ -128,6 +128,21 @@ class ExpenseController extends Controller
     }
 
     /**
+     * Displays payment view for single model
+     * @param int $id ID
+     * @returns string
+     * @throws NotFoundHttpException
+     */
+    public function actionPayment($id)
+    {
+        $model=$this->findModel($id);
+        return $this->render('payment',[
+            'model'=>$model
+        ]);
+
+    }
+
+    /**
      * Finds the Expense model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
@@ -142,4 +157,6 @@ class ExpenseController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
 }

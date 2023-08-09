@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--   Make payment button shown if isPaid attribute of model is set to 0 -->
         <?php
             if($model->isPaid==0) {
-               echo Html::a('Make payment', ['pay', 'id' => $model->id], ['class' => 'btn btn-primary']) ;
+               echo Html::a('Make payment', ['payment', 'id' => $model->id], ['class' => 'btn btn-primary']) ;
         }
         ?>
     </p>
