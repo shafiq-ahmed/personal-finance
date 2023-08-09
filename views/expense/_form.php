@@ -1,7 +1,9 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Sources;
 
 /** @var yii\web\View $this */
 /** @var app\models\Expense $model */
@@ -14,7 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'source')->textInput() ?>
+    <?= $form->field($model, 'source')->dropDownList(
+            ArrayHelper::map(Sources::find()->all(),'id','name')
+    ) ?>
 
     <?= $form->field($model, 'amount')->textInput() ?>
 
