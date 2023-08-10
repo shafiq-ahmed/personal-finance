@@ -17,13 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
 
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
     <!--   Make payment button shown if isPaid attribute of model is set to 0 -->
         <?php
             if($model->isPaid==0) {
