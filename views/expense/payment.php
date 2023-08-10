@@ -31,8 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'month')->textInput ( [ 'disabled' => true]) ?>
 
     <?php
-    $expensedate=Yii::$app->formatter->asDate($model->expenseDate, 'dd-MM-yyyy');
-     echo $form->field($model, 'expenseDate')->textInput ( ['value' => $expensedate,'disabled'=>true])
+    //format timestamp to show only date
+    $expenseDate=Yii::$app->formatter->asDate($model->expenseDate, 'dd-MM-yyyy');
+     echo $form->field($model, 'expenseDate')->textInput ( ['value' => $expenseDate,'disabled'=>true])
     ?>
 
     <div class="form-group">
