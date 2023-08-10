@@ -165,7 +165,11 @@ class ExpenseController extends Controller
                 //set isPaid to 1 after succesfull payment
                 $model->isPaid=1;
 
-                $model->save();
+                //push record update operation to queue
+                Yii::$app->queue->delay(1)->push(new AddExpenseJob([
+                    'model'=>$model
+                ]));
+
                 return $this->render('view', [
                     'model' => $model
                 ]);
