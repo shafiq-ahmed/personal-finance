@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\AddExpenseJob;
 use app\models\Expense;
 use app\models\ExpenseSearch;
 use Yii;
@@ -76,8 +77,11 @@ class ExpenseController extends Controller
             //and model is successfully saved
             //redirect to view page
             try{
-                if ($model->load($this->request->post()) && $model->save()) {
-                    return $this->redirect(['view', 'id' => $model->id]);
+                if ($model->load($this->request->post()) ) {
+                    Yii::$app->queue->delay(40)->push(new AddExpenseJob([
+                        'model'=>$model
+                    ]));
+                    return $this->redirect(['index']);
                 }
 
             }catch (\Throwable $modelSaveError){
@@ -147,6 +151,7 @@ class ExpenseController extends Controller
                 //TODO: Validate database entries
                 //set isPaid to 1 after succesfull payment
                 $model->isPaid=1;
+
                 $model->save();
                 return $this->render('view', [
                     'model' => $model
