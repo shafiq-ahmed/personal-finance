@@ -5,7 +5,9 @@ namespace app\controllers;
 use app\models\AddExpenseJob;
 use app\models\Expense;
 use app\models\ExpenseSearch;
+use app\models\Sources;
 use Yii;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -78,9 +80,11 @@ class ExpenseController extends Controller
             //redirect to view page
             try{
                 if ($model->load($this->request->post()) ) {
+                    //push insert operation to queue
                     Yii::$app->queue->delay(1)->push(new AddExpenseJob([
                         'model'=>$model
                     ]));
+
                     return $this->redirect(['index']);
                 }
 
@@ -141,6 +145,7 @@ class ExpenseController extends Controller
     {
         $model=$this->findModel($id);
 
+
         //if there is an error in model loading or saving
         //show error flash message
         try {
@@ -148,6 +153,14 @@ class ExpenseController extends Controller
             //and model is loaded and saved properly show updated view page
             //if not a post request, show payment page
             if ($this->request->isPost && $model->load($this->request->post())) {
+                //load source instance using sourceid
+                $source=Sources::findOne($model->source);
+
+                //Source must have minimum 500tk after payment
+                //otherwise payment is denied and shown flash error message
+                if($model->amount>$source->currentBalance-500){
+                    throw new Exception('You don\'t have sufficient funds for this payment');
+                }
                 //TODO: Validate database entries
                 //set isPaid to 1 after succesfull payment
                 $model->isPaid=1;
