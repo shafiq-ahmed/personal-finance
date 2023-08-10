@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Sources;
 use app\models\SourcesSearch;
+use Yii;
+use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,8 +72,12 @@ class SourceController extends Controller
         $model = new Sources();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            try {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }catch(\Throwable $modelError){
+                Yii::$app->session->setFlash('danger',$modelError->getMessage());
             }
         } else {
             $model->loadDefaultValues();

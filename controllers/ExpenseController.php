@@ -172,7 +172,7 @@ class ExpenseController extends Controller
                 Yii::$app->queue->delay(1)->push(new AddExpenseJob([
                     'model'=>$model
                 ]));
-
+                //update source table after deduction
                 $sourceModel->save();
 
                 return $this->render('view', [
