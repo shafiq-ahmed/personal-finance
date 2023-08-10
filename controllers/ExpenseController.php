@@ -144,6 +144,7 @@ class ExpenseController extends Controller
             //and model is loaded and saved properly show updated view page
             //if not a post request, show payment page
             if ($this->request->isPost && $model->load($this->request->post())) {
+                //TODO: Validate database entries
                 //set isPaid to 1 after succesfull payment
                 $model->isPaid=1;
                 $model->save();
