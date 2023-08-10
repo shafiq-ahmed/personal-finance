@@ -136,9 +136,31 @@ class ExpenseController extends Controller
     public function actionPayment($id)
     {
         $model=$this->findModel($id);
+
+        //if there is an error in model loading or saving
+        //show error flash message
+        try {
+            //if it is a post request
+            //and model is loaded and saved properly show updated view page
+            //if not a post request, show payment page
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+
+                $model->isPaid=1;
+                return $this->render('view', [
+                    'model' => $model
+                ]);
+            }
+        }catch(\Throwable $modelOperationError){
+            Yii::$app->session->setFlash('danger',$modelOperationError->getMessage());
+        }
+
         return $this->render('payment',[
             'model'=>$model
         ]);
+
+
+
+
 
     }
 
