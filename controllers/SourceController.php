@@ -72,6 +72,8 @@ class SourceController extends Controller
         $model = new Sources();
 
         if ($this->request->isPost) {
+            //if model fails to load or model save operation fails
+            //show flash error message to user
             try {
                 if ($model->load($this->request->post()) && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);

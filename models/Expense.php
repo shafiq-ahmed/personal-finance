@@ -34,10 +34,11 @@ class Expense extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-
+            //TODO: name must be valid name. No special or numeric characters can be added
             [['name', 'amount'], 'required'],
             [['source', 'createdAt', 'isPaid'], 'integer'],
-            [['amount'], 'number'],
+            [['amount'], 'number','min'=>100],
+            [['name'], 'match', 'pattern' => '^[a-zA-Z]+$','skipOnError' => true],
             [['name'], 'string', 'max' => 255],
             [['month'], 'default', 'value' => date('F')]
         ];
