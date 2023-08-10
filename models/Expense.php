@@ -21,6 +21,8 @@ class Expense extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    //isPaid data will be mapped to this constant in view page
+    const IS_PAID = [0 => 'Unpaid', 1 => 'Paid'];
     public static function tableName()
     {
         return 'expense';

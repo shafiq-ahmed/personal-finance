@@ -78,7 +78,7 @@ class ExpenseController extends Controller
             //redirect to view page
             try{
                 if ($model->load($this->request->post()) ) {
-                    Yii::$app->queue->delay(40)->push(new AddExpenseJob([
+                    Yii::$app->queue->delay(1)->push(new AddExpenseJob([
                         'model'=>$model
                     ]));
                     return $this->redirect(['index']);
