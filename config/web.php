@@ -4,7 +4,8 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'personal-finance',
+    'name' => 'Personal Finance',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -14,7 +15,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'agsKo8bnAa4Gw-dZKtvLcVrXLOFWXgTu',
+            'cookieValidationKey' => 'agsKo8bnAa4Gw-dZKtvLcVrXLOFWXgTu_34234234',
         ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,

@@ -22,12 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-
     <?= $form->field($model, 'amount')->textInput() ?>
-
-
-
-
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

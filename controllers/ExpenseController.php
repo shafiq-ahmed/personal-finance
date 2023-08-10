@@ -64,6 +64,8 @@ class ExpenseController extends Controller
         ]);
     }
 
+
+
     /**
      * Creates a new Expense model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -72,6 +74,7 @@ class ExpenseController extends Controller
     public function actionCreate()
     {
         $model = new Expense();
+        $model->setScenario('create');
 
 
         if ($this->request->isPost) {
@@ -80,10 +83,16 @@ class ExpenseController extends Controller
             //redirect to view page
             try{
                 if ($model->load($this->request->post()) ) {
+
+                    if(!$model->save()){
+                       echo "<pre>";
+                       print_r($model->getErrors());
+                    }
+
                     //push insert operation to queue
-                    Yii::$app->queue->delay(1)->push(new AddExpenseJob([
-                        'model'=>$model
-                    ]));
+//                    Yii::$app->queue->delay(1)->push(new AddExpenseJob([
+//                        'model'=>$model
+//                    ]));
 
                     return $this->redirect(['index']);
                 }
@@ -111,7 +120,6 @@ class ExpenseController extends Controller
     public function actionPayment($id)
     {
         $model=$this->findModel($id);
-
 
         //if there is an error in model loading or saving
         //show error flash message
