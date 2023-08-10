@@ -154,21 +154,26 @@ class ExpenseController extends Controller
             //if not a post request, show payment page
             if ($this->request->isPost && $model->load($this->request->post())) {
                 //load source instance using sourceid
-                $source=Sources::findOne($model->source);
+                $sourceModel=Sources::findOne($model->source);
 
                 //Source must have minimum 500tk after payment
                 //otherwise payment is denied and shown flash error message
-                if($model->amount>$source->currentBalance-500){
+                if($model->amount>$sourceModel->currentBalance-500){
                     throw new Exception('You don\'t have sufficient funds for this payment');
                 }
                 //TODO: Validate database entries
-                //set isPaid to 1 after succesfull payment
+
+                //Deduce payment from source balance
+                $sourceModel->currentBalance-=$model->amount;
+                //set isPaid to 1 after successful payment
                 $model->isPaid=1;
 
                 //push record update operation to queue
                 Yii::$app->queue->delay(1)->push(new AddExpenseJob([
                     'model'=>$model
                 ]));
+
+                $sourceModel->save();
 
                 return $this->render('view', [
                     'model' => $model
