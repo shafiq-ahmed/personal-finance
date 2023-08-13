@@ -120,6 +120,7 @@ class ExpenseController extends Controller
     public function actionPayment($id)
     {
         $model=$this->findModel($id);
+        $model->setScenario('make_payment');
 
         //if there is an error in model loading or saving
         //show error flash message
