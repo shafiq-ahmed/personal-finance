@@ -63,7 +63,7 @@ class ExpenseController extends Controller
 
         $model=Expense::findOne($id);
         //lazily load source model
-        $source=$model->sourceId;
+        $source=$model->sourceModel;
         return $this->render('view', [
             'model' => $model,
             'sourceName'=>$source->name
