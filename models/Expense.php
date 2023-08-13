@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -54,6 +55,15 @@ class Expense extends ActiveRecord
                 // if you're using datetime instead of UNIX timestamp:
                 'value' => new Expression('NOW()'),
             ],
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['month'],
+                ],
+                //'updatedAtAttribute' => 'update_time',
+                'value' => date('F'),
+            ],
+
         ];
     }
 
@@ -66,11 +76,11 @@ class Expense extends ActiveRecord
             //TODO: name must be valid name. No special or numeric characters can be added
             [['name', 'amount'], 'required', 'on' => ['create', 'account']],
             [['amount'], 'required', 'on' => ['modify']],
-            [['source', 'createdAt', 'isPaid'], 'integer'],
+            [['source', 'isPaid'], 'integer'],
             [['amount'], 'number', 'min' => 100],
             //[['name'], 'match', 'pattern' => '^[a-zA-Z]+$','skipOnError' => true],
             [['name'], 'string', 'max' => 255],
-            [['month'], 'default', 'value' => date('F')]
+
         ];
     }
 

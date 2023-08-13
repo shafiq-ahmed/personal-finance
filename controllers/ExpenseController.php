@@ -84,15 +84,15 @@ class ExpenseController extends Controller
             try{
                 if ($model->load($this->request->post()) ) {
 
-                    if(!$model->save()){
+                    /*if(!$model->save()){
                        echo "<pre>";
                        print_r($model->getErrors());
-                    }
+                    }*/
 
                     //push insert operation to queue
-//                    Yii::$app->queue->delay(1)->push(new AddExpenseJob([
-//                        'model'=>$model
-//                    ]));
+                    Yii::$app->queue->delay(1)->push(new AddExpenseJob([
+                        'model'=>$model
+                    ]));
 
                     return $this->redirect(['index']);
                 }
