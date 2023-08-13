@@ -128,5 +128,10 @@ class Expense extends ActiveRecord
         return $scenarios;
     }
 
+    //TODO: implement eager loading for showing expense view
+    /*public function getSource()
+    {
+        return $this->hasOne(Sources::class,['id'=>'source']);
+    }*/
 
 }

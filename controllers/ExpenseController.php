@@ -59,8 +59,12 @@ class ExpenseController extends Controller
      */
     public function actionView($id)
     {
+        Yii::$app->cache->flush();
+        //$model=Expense::find($id)->with('source')->one();
+        $model=$this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'sourceName'=>Sources::findOne($model->source)->name
         ]);
     }
 
@@ -75,6 +79,7 @@ class ExpenseController extends Controller
     {
         $model = new Expense();
         $model->setScenario('create');
+
 
 
         if ($this->request->isPost) {
@@ -152,7 +157,8 @@ class ExpenseController extends Controller
                 $sourceModel->save();
 
                 return $this->render('view', [
-                    'model' => $model
+                    'model' => $model,
+                    'sourceName'=>$sourceModel->name
                 ]);
             }
         }catch(\Throwable $modelOperationError){
