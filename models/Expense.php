@@ -29,6 +29,10 @@ class Expense extends ActiveRecord
     const IS_PAID = [0 => 'Unpaid', 1 => 'Paid'];
     const SCENARIO_CREATE ='create';
     const SCENARIO_MAkE_PAYMENT='make_payment';
+    /**
+     * @var mixed|null
+     */
+
 
     public static function tableName()
     {
@@ -129,9 +133,9 @@ class Expense extends ActiveRecord
     }
 
     //TODO: implement eager loading for showing expense view
-    /*public function getSource()
+    public function getSourceId()
     {
         return $this->hasOne(Sources::class,['id'=>'source']);
-    }*/
+    }
 
 }

@@ -47,4 +47,9 @@ class Sources extends \yii\db\ActiveRecord
             'currentBalance' => 'Current Balance',
         ];
     }
+
+    public function getExpenses()
+    {
+        return $this->hasMany(Expense::class,['source'=>'id']);
+    }
 }

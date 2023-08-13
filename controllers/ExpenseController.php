@@ -59,12 +59,14 @@ class ExpenseController extends Controller
      */
     public function actionView($id)
     {
-        Yii::$app->cache->flush();
-        //$model=Expense::find($id)->with('source')->one();
-        $model=$this->findModel($id);
+
+
+        $model=Expense::findOne($id);
+        //lazily load source model
+        $source=$model->sourceId;
         return $this->render('view', [
             'model' => $model,
-            'sourceName'=>Sources::findOne($model->source)->name
+            'sourceName'=>$source->name
         ]);
     }
 
