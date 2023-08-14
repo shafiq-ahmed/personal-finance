@@ -3,6 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\AttributeBehavior;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "earnings".
@@ -14,7 +18,7 @@ use Yii;
  * @property float $inflowAmount
  * @property string $createdAt
  *
- * @property Sources $source0
+ * @property Sources $sourceModel
  */
 class Earnings extends \yii\db\ActiveRecord
 {
@@ -32,10 +36,9 @@ class Earnings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['source', 'previousBalance', 'inflowDescription', 'inflowAmount'], 'required'],
+            [['source', 'inflowDescription', 'inflowAmount'], 'required'],
             [['source'], 'integer'],
-            [['previousBalance', 'inflowAmount'], 'number'],
-            [['createdAt'], 'safe'],
+            [[ 'inflowAmount'], 'number'],
             [['inflowDescription'], 'string', 'max' => 255],
             [['source'], 'exist', 'skipOnError' => true, 'targetClass' => Sources::class, 'targetAttribute' => ['source' => 'id']],
         ];
@@ -56,12 +59,26 @@ class Earnings extends \yii\db\ActiveRecord
         ];
     }
 
-    public function bahaviors()
+    public function behaviors()
     {
-        return[
-            [
 
-            ]
+        return[
+            /* TODO: implement behavior to set previous balance based on source input
+             * [
+                'class'=>AttributeBehavior::class,
+                'attributes'=>[
+                    ActiveRecord::EVENT_BEFORE_INSERT=>['previousBalance'],
+                ],
+                //dd(Yii::$app->request->post('source')),
+                'value'=>
+            ],*/
+            [
+                'class'=>AttributeBehavior::class,
+                'attributes'=>[
+                    ActiveRecord::EVENT_BEFORE_INSERT=>['createdAt'],
+                    ],
+                    'value'=>new Expression('NOW()')
+            ],
         ];
     }
     /**

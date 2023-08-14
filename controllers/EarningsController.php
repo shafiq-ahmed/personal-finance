@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Earnings;
 use app\models\EarningsSearch;
+use app\models\Sources;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,7 +71,15 @@ class EarningsController extends Controller
         $model = new Earnings();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post())) {
+                //set previous balance from source
+                $model->previousBalance=$model->sourceModel->currentBalance;
+                //update current balance of source
+                $model->sourceModel->currentBalance+=$model->inflowAmount;
+                //save updated value
+                $model->sourceModel->save();
+                $model->save();
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
