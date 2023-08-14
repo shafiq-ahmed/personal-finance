@@ -38,7 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'previousBalance',
             'inflowDescription',
             'inflowAmount',
-            'createdAt',
+            [
+                    'attribute'=>'createdAt',
+                    'value'=>function($model)
+                    {
+                        return date('d/m/Y', strtotime($model->createdAt));
+                    }
+            ],
         ],
     ]) ?>
 
