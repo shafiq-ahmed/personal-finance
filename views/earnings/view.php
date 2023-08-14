@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var app\models\Earnings $model */
+/** @var string $sourceName */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Earnings', 'url' => ['index']];
@@ -29,8 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'source',
+            [
+                    'attribute'=>'name',
+                    'value'=>$model->sourceModel->name,
+                    'label'=>'Source Name'
+            ],
             'previousBalance',
             'inflowDescription',
             'inflowAmount',
