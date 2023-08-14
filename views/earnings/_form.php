@@ -10,22 +10,6 @@ use yii\widgets\ActiveForm;
 
 <div class="earnings-form">
 
-    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'source')->textInput() ?>
-
-    <?= $form->field($model, 'previousBalance')->textInput() ?>
-
-    <?= $form->field($model, 'inflowDescription')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'inflowAmount')->textInput() ?>
-
-    <?= $form->field($model, 'createdAt')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 </div>

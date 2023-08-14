@@ -56,6 +56,14 @@ class Earnings extends \yii\db\ActiveRecord
         ];
     }
 
+    public function bahaviors()
+    {
+        return[
+            [
+
+            ]
+        ];
+    }
     /**
      * Gets query for [[Source0]].
      *
