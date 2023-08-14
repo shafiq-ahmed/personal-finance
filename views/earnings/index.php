@@ -21,16 +21,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Earnings', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                    'attribute'=>'source',
+                    'value'=>function($model)
+                    {
 
-            'id',
-            'source',
+                        return $model->sourceModel->name;
+                    }
+            ],
             'previousBalance',
             'inflowDescription',
             'inflowAmount',

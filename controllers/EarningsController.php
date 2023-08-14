@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Earnings;
 use app\models\EarningsSearch;
 use app\models\Sources;
+use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -42,6 +43,10 @@ class EarningsController extends Controller
     {
         $searchModel = new EarningsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        //TODO: use the dataprovider this way and show source name in view page
+        /*$dataProvider= new ActiveDataProvider([
+            'query'=>Earnings::find()->with('sourceModel'),
+        ]);*/
 
         return $this->render('index', [
             'searchModel' => $searchModel,
