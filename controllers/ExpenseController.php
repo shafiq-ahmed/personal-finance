@@ -20,6 +20,8 @@ class ExpenseController extends Controller
     /**
      * @inheritDoc
      */
+    const MINIMUM_AMOUNT=500;
+
     public function behaviors()
     {
         return array_merge(
@@ -66,7 +68,7 @@ class ExpenseController extends Controller
         $source=$model->sourceModel;
         return $this->render('view', [
             'model' => $model,
-            'sourceName'=>$source->name
+            'sourceName'=>$source?$source->name:null
         ]);
     }
 
@@ -141,7 +143,7 @@ class ExpenseController extends Controller
 
                 //Source must have minimum 500tk after payment
                 //otherwise payment is denied and shown flash error message
-                if($model->amount>$sourceModel->currentBalance-500){
+                if($model->amount>$sourceModel->currentBalance-self::MINIMUM_AMOUNT){
                     throw new Exception('You don\'t have sufficient funds for this payment');
                 }
                 //TODO: Validate database entries

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var app\models\Earnings $model */
 /** @var string $sourceName */
 
-$this->title = $model->id;
+$this->title = 'Earnings Inflow';
 $this->params['breadcrumbs'][] = ['label' => 'Earnings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
