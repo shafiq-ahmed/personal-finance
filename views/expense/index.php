@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Expense;
+use app\models\Sources;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -40,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'source',
                 'value'=>'sourceModel.name',
-                'filter'=>ArrayHelper::  map(\app\models\Sources::find()->all(),'id', 'name'),
+                'filter'=>ArrayHelper::  map(Sources::find()->all(),'id', 'name'),
             ],
             'amount',
             [
