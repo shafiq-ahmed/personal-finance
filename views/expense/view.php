@@ -37,7 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'amount',
             'month',
-            'expenseDate',
+            [
+                    'attribute'=>'expenseDate',
+                    'label'=>'Expense Date',
+                    'value'=>function($model)
+                    {
+                        return date('d-M-Y',strtotime($model->expenseDate));
+                    }
+            ],
             'createdAt',
             [
                 'attribute' => 'isPaid',
