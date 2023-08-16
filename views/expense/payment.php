@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model,'name')->textInput ( [ 'disabled' => true]) ?>
 
     <?= $form->field($model, 'source')->dropDownList(
-            ArrayHelper::map(Sources::find()->all(),'id','name'),
+            ArrayHelper::map(Sources::find()->orderBy('isPrimary DESC')->all(),'id','name'),
     ) ?>
 
     <?= $form->field($model, 'amount')->textInput ( [ 'disabled' => true]) ?>
