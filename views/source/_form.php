@@ -14,9 +14,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'isPrimary')->textInput() ?>
+    <?= $form->field($model, 'isPrimary')->radioList([1=>'Yes',0=>'No']) ?>
 
-    <?= $form->field($model, 'currentBalance')->textInput() ?>
+    <?= $form->field($model, 'currentBalance')->textInput()->label('Initial Balance') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
