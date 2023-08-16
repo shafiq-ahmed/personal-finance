@@ -43,7 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'month',
             //'expenseDate',
             //'createdAt',
-            //'isPaid',
+            [
+                    'attribute'=>'isPaid',
+                    'label'=>'Payment Status',
+                    'value'=>function($model)
+                    {
+                        return Expense::IS_PAID[$model->isPaid]??'N/A';
+                    }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Expense $model, $key, $index, $column) {
