@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Expense;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -35,12 +36,17 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'name',
 
+
             [
                 'attribute'=>'source',
-                'value'=>'sourceModel.name'
+                'value'=>'sourceModel.name',
+                'filter'=>ArrayHelper::  map(\app\models\Sources::find()->all(),'id', 'name'),
             ],
             'amount',
-            'month',
+            [
+                    'attribute'=>'month',
+                    'filter'=>ArrayHelper::map(Expense::find()->select('month')->distinct()->all(),'month','month')
+            ],
             //'expenseDate',
             //'createdAt',
             [
@@ -51,6 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Expense::IS_PAID[$model->isPaid]??'N/A';
                     }
             ],
+
+
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Expense $model, $key, $index, $column) {

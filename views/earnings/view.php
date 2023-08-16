@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute'=>'createdAt',
                     'value'=>function($model)
                     {
-                        return date('d/m/Y', strtotime($model->createdAt));
+                        return date('d-m-Y', strtotime($model->createdAt));
                     }
             ],
         ],
