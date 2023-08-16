@@ -138,4 +138,10 @@ class Expense extends ActiveRecord
         return $this->hasOne(Sources::class,['id'=>'source']);
     }
 
+    public static function getTotalOutstandingAmount()
+    {
+        return self::find()->where('isPaid=0')->sum('amount');
+
+    }
+
 }

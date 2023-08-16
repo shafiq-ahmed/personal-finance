@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'showFooter'=>true,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -43,10 +44,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>'sourceModel.name',
                 'filter'=>ArrayHelper::  map(Sources::find()->all(),'id', 'name'),
             ],
-            'amount',
+            [
+                    'attribute'=>'amount',
+                    'footer'=>'Total Outstanding: '.Expense::getTotalOutstandingAmount(),
+                    'footerOptions' => [
+                        'class' => 'not-set', // add css class for label // add style for label
+                        'content' => 'Total Outstanding:', // add content for label
+                    ],
+            ],
             [
                     'attribute'=>'month',
-                    'filter'=>ArrayHelper::map(Expense::find()->select('month')->distinct()->all(),'month','month')
+                    'filter'=>ArrayHelper::map(Expense::find()->select('month')->distinct()->all(),'month','month'),
+
             ],
             //'expenseDate',
             //'createdAt',
@@ -56,7 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value'=>function($model)
                     {
                         return Expense::IS_PAID[$model->isPaid]??'N/A';
-                    }
+                    },
+                    //'filter'=>ArrayHelper::map()
+
             ],
 
 
