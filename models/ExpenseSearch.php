@@ -14,10 +14,12 @@ class ExpenseSearch extends Expense
     /**
      * {@inheritdoc}
      */
+
+
     public function rules()
     {
         return [
-            [['id', 'source', 'createdAt', 'isPaid'], 'integer'],
+            [['id','source',  'createdAt', 'isPaid'], 'integer'],
             [['name', 'month', 'expenseDate'], 'safe'],
             [['amount'], 'number'],
         ];
@@ -41,7 +43,8 @@ class ExpenseSearch extends Expense
      */
     public function search($params)
     {
-        $query = Expense::find();
+        $query = Expense::find()->joinWith('sourceModel');
+
 
         // add conditions that should always apply here
 
@@ -69,6 +72,7 @@ class ExpenseSearch extends Expense
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'month', $this->month]);
+
 
         return $dataProvider;
     }

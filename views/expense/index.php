@@ -21,7 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Expense', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);
+    //
+
+     ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -31,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'id',
             'name',
-            'source',
+
+            [
+                'attribute'=>'source',
+                'value'=>'sourceModel.name'
+            ],
             'amount',
             'month',
             //'expenseDate',
