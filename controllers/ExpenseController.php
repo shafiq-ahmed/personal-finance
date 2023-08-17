@@ -6,8 +6,10 @@ use app\models\AddExpenseJob;
 use app\models\Expense;
 use app\models\ExpenseSearch;
 use app\models\Sources;
+use app\models\Transactions;
 use Yii;
 use yii\db\Exception;
+use yii\db\Expression;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -137,6 +139,7 @@ class ExpenseController extends Controller
             //if it is a post request
             //and model is loaded and saved properly show updated view page
             //if not a post request, show payment page
+            $transaction=Yii::$app->db->beginTransaction();
             if ($this->request->isPost && $model->load($this->request->post())) {
                 //load source instance using sourceid
                 $sourceModel=Sources::findOne($model->source);
@@ -154,11 +157,18 @@ class ExpenseController extends Controller
                 $model->isPaid=1;
 
                 //push record update operation to queue
-                Yii::$app->queue->delay(1)->push(new AddExpenseJob([
+                /*Yii::$app->queue->delay(1)->push(new AddExpenseJob([
                     'model'=>$model
-                ]));
+                ]));*/
+                $model->save();
                 //update source table after deduction
                 $sourceModel->save();
+                $transactionModel= new Transactions();
+                $transactionModel->sourceId=$model->sourceModel->id;
+                $transactionModel->expenseId=$model->getPrimaryKey();
+                $transactionModel->createdAt=new Expression('NOW()');
+                $transactionModel->save();
+                $transaction->commit();
 
                 return $this->render('view', [
                     'model' => $model,
@@ -166,6 +176,7 @@ class ExpenseController extends Controller
                 ]);
             }
         }catch(\Throwable $modelOperationError){
+            $transaction->rollBack();
             Yii::$app->session->setFlash('danger',$modelOperationError->getMessage());
         }
 
