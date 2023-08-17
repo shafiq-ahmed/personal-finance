@@ -66,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     {
                         return Expense::IS_PAID[$model->isPaid]??'N/A';
                     },
+                    'filter'=>ArrayHelper::map(array(['id'=>1,'value'=>'Paid'],['id'=>0,'value'=>'Unpaid']),'id','value')
                     //'filter'=>ArrayHelper::map()
 
             ],
