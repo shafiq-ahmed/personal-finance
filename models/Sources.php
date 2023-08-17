@@ -55,6 +55,10 @@ class Sources extends \yii\db\ActiveRecord
         return $this->hasMany(Expense::class,['source'=>'id']);
     }
 
+    /**
+     * Returns all the possible isPrimary values as key value pairs
+     * @return array[]
+     */
     public static function getAllIsPrimaryKeyValues()
     {
         //TODO: find alternative usage for IS_PRIMARY const

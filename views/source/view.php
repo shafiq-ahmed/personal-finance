@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Sources;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -31,7 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'isPrimary',
+            [
+                    'attribute'=>'isPrimary',
+                    'label'=>'Primary',
+                    'value'=>function($model)
+                    {
+                        return Sources::IS_PRIMARY[$model->isPrimary]??'N/A';
+                    }
+            ],
             'currentBalance',
         ],
     ]) ?>
