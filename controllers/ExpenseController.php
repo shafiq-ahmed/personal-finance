@@ -7,6 +7,7 @@ use app\models\Expense;
 use app\models\ExpenseSearch;
 use app\models\Sources;
 use app\models\Transactions;
+use Cassandra\Time;
 use Yii;
 use yii\db\Exception;
 use yii\db\Expression;
@@ -22,7 +23,7 @@ class ExpenseController extends Controller
     /**
      * @inheritDoc
      */
-    const MINIMUM_AMOUNT=500;
+    const MINIMUM_AMOUNT = 500;
 
     public function behaviors()
     {
@@ -65,15 +66,14 @@ class ExpenseController extends Controller
     {
 
 
-        $model=Expense::findOne($id);
+        $model = Expense::findOne($id);
         //lazily load source model
-        $source=$model->sourceModel;
+        $source = $model->sourceModel;
         return $this->render('view', [
             'model' => $model,
-            'sourceName'=>$source?$source->name:null
+            'sourceName' => $source ? $source->name : null
         ]);
     }
-
 
 
     /**
@@ -87,13 +87,12 @@ class ExpenseController extends Controller
         $model->setScenario('create');
 
 
-
         if ($this->request->isPost) {
             //if post request successfully loaded
             //and model is successfully saved
             //redirect to view page
-            try{
-                if ($model->load($this->request->post()) ) {
+            try {
+                if ($model->load($this->request->post())) {
 
                     /*if(!$model->save()){
                        echo "<pre>";
@@ -102,14 +101,14 @@ class ExpenseController extends Controller
 
                     //push insert operation to queue
                     Yii::$app->queue->delay(1)->push(new AddExpenseJob([
-                        'model'=>$model
+                        'model' => $model
                     ]));
 
                     return $this->redirect(['index']);
                 }
 
-            }catch (\Throwable $modelSaveError){
-                Yii::$app->session->setFlash('danger',$modelSaveError->getMessage());
+            } catch (\Throwable $modelSaveError) {
+                Yii::$app->session->setFlash('danger', $modelSaveError->getMessage());
             }
 
         } else {
@@ -130,62 +129,69 @@ class ExpenseController extends Controller
      */
     public function actionPayment($id)
     {
-        $model=$this->findModel($id);
+        $model = $this->findModel($id);
         $model->setScenario('make_payment');
 
         //if there is an error in model loading or saving
         //show error flash message
-        try {
-            //if it is a post request
-            //and model is loaded and saved properly show updated view page
-            //if not a post request, show payment page
-            $transaction=Yii::$app->db->beginTransaction();
-            if ($this->request->isPost && $model->load($this->request->post())) {
-                //load source instance using sourceid
-                $sourceModel=Sources::findOne($model->source);
 
-                //Source must have minimum 500tk after payment
-                //otherwise payment is denied and shown flash error message
-                if($model->amount>$sourceModel->currentBalance-self::MINIMUM_AMOUNT){
-                    throw new Exception('You don\'t have sufficient funds for this payment');
+
+        if ($this->request->isPost) {
+
+            $model->load($this->request->post());
+            //Source must have minimum 500tk after payment
+            //otherwise payment is denied and shown flash error message
+            //TODO: Validate database entries
+
+            //Deduce payment from source balance
+            //set isPaid to 1 after successful payment
+            $model->isPaid = 1;
+
+            //push record update operation to queue
+            /*Yii::$app->queue->delay(1)->push(new AddExpenseJob([
+                'model'=>$model
+            ]));*/
+
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try {
+                //if it is a post request
+                $isSave = false;
+                if ($model->save()) {
+                    //$sourceModel = Sources::findOne($model->source);
+                    $model->sourceModel->currentBalance -= $model->amount;
+                    if ($model->sourceModel->save()) {
+                        $transactionModel = new Transactions();
+                        $transactionModel->sourceId = $model->sourceModel->id;
+                        $transactionModel->expenseId = $model->id;
+                        $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
+                        if ($transactionModel->save()) {
+                            $isSave = true;
+                        }
+                    }
                 }
-                //TODO: Validate database entries
 
-                //Deduce payment from source balance
-                $sourceModel->currentBalance-=$model->amount;
-                //set isPaid to 1 after successful payment
-                $model->isPaid=1;
+                if ($isSave) {
+                    $transaction->commit();
+                } else {
+                    $transaction->rollBack();
+                }
 
-                //push record update operation to queue
-                /*Yii::$app->queue->delay(1)->push(new AddExpenseJob([
-                    'model'=>$model
-                ]));*/
-                $model->save();
-                //update source table after deduction
-                $sourceModel->save();
-                $transactionModel= new Transactions();
-                $transactionModel->sourceId=$model->sourceModel->id;
-                $transactionModel->expenseId=$model->getPrimaryKey();
-                $transactionModel->createdAt=new Expression('NOW()');
-                $transactionModel->save();
-                $transaction->commit();
-
-                return $this->render('view', [
-                    'model' => $model,
-                    'sourceName'=>$sourceModel->name
-                ]);
+            } catch (\Throwable $modelOperationError) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('danger', $modelOperationError->getMessage());
             }
-        }catch(\Throwable $modelOperationError){
-            $transaction->rollBack();
-            Yii::$app->session->setFlash('danger',$modelOperationError->getMessage());
+
+            //update source table after deduction
+            return $this->render('view', [
+                'model' => $model,
+                'sourceName' => $sourceModel->name
+            ]);
         }
 
-        return $this->render('payment',[
-            'model'=>$model
+        return $this->render('payment', [
+            'model' => $model
         ]);
-
-
-
 
 
     }

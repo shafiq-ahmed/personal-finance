@@ -38,7 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'label'=>'Source',
                     'value'=>'source.name'
             ],
-            'createdAt',
+            [
+                    'attribute'=>'createdAt',
+                    'value'=>function($model)
+                    {
+                        return date('d-M-Y h:m:s',strtotime($model->createdAt));
+                    }
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Transactions $model, $key, $index, $column) {

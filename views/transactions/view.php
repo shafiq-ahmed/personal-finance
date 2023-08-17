@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Transactions $model */
 
-$this->title = $model->id;
+$this->title = 'Transactions';
 $this->params['breadcrumbs'][] = ['label' => 'Transactions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -31,8 +31,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'expenseId',
+            [
+                'attribute'=>'expenseId',
+                'label'=>'Expense amount',
+                'value'=>$model->expense->amount
+            ],
             'sourceId',
-            'createdAt',
+            [
+                'attribute'=>'sourceId',
+                'label'=>'Source Name',
+                'value'=>$model->source->name
+            ],
+
+            [
+                'attribute'=>'createdAt',
+                'value'=>function($model)
+                {
+                    return date('d-M-Y h:m:s',strtotime($model->createdAt));
+                }
+            ],
         ],
     ]) ?>
 
