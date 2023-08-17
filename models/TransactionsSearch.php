@@ -40,7 +40,7 @@ class TransactionsSearch extends Transactions
      */
     public function search($params)
     {
-        $query = Transactions::find();
+        $query = Transactions::find()->with('source')->with('expense');
 
         // add conditions that should always apply here
 

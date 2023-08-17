@@ -28,10 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'expenseId',
-            'sourceId',
+            [
+                    'attribute'=>'expenseId',
+                    'label'=>'Expense amount',
+                    'value'=>'expense.amount'
+            ],
+            [
+                    'attribute'=>'sourceId',
+                    'label'=>'Source',
+                    'value'=>'source.name'
+            ],
             'createdAt',
             [
                 'class' => ActionColumn::className(),
