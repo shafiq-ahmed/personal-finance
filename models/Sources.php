@@ -17,6 +17,8 @@ class Sources extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+    const IS_PRIMARY=[1=>'Yes',0=>'No'];
     public static function tableName()
     {
         return 'sources';
@@ -51,5 +53,11 @@ class Sources extends \yii\db\ActiveRecord
     public function getExpenses()
     {
         return $this->hasMany(Expense::class,['source'=>'id']);
+    }
+
+    public static function getAllIsPrimaryKeyValues()
+    {
+        //TODO: find alternative usage for IS_PRIMARY const
+        return [['id'=>0,'value'=>'No'],['id'=>1,'value'=>'Yes']];
     }
 }

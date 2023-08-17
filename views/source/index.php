@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Sources;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -28,10 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'name',
-            'isPrimary',
+            [
+                    'attribute'=>'isPrimary',
+                    'label'=>'Primary',
+                    'value'=>function($model)
+                    {
+                        return Sources::IS_PRIMARY[$model->isPrimary]??'N/A';
+                    },
+                    'filter'=>ArrayHelper::map(Sources::getAllIsPrimaryKeyValues(),'id','value')
+            ],
             'currentBalance',
             [
                 'class' => ActionColumn::className(),
