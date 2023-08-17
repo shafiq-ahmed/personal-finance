@@ -60,11 +60,11 @@ class SourcesSearch extends Sources
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'isPrimary' => $this->isPrimary,
-            'currentBalance' => $this->currentBalance,
+            'isPrimary'=>$this->isPrimary
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+                ->andFilterWhere(['<=','currentBalance',$this->currentBalance]);
 
         return $dataProvider;
     }
