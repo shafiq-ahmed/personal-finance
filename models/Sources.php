@@ -18,7 +18,9 @@ class Sources extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
 
-    const IS_PRIMARY=[1=>'Yes',0=>'No'];
+    const IS_PRIMARY = [1 => 'Yes', 0 => 'No'];
+    const SOURCE_IS_PRIMARY=1;
+    const SOURCE_IS_NOT_PRIMARY=0;
     public static function tableName()
     {
         return 'sources';
@@ -30,9 +32,9 @@ class Sources extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','currentBalance'], 'required'],
+            [['name', 'currentBalance'], 'required'],
             [['isPrimary'], 'integer'],
-            [['currentBalance'], 'number','min'=>500],
+            [['currentBalance'], 'number', 'min' => 500],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -52,7 +54,7 @@ class Sources extends \yii\db\ActiveRecord
 
     public function getExpenses()
     {
-        return $this->hasMany(Expense::class,['source'=>'id']);
+        return $this->hasMany(Expense::class, ['source' => 'id']);
     }
 
     /**
@@ -62,21 +64,24 @@ class Sources extends \yii\db\ActiveRecord
     public static function getAllIsPrimaryKeyValues()
     {
         //TODO: find alternative usage for IS_PRIMARY const
-        return [['id'=>0,'value'=>'No'],['id'=>1,'value'=>'Yes']];
+        return [['id' => 0, 'value' => 'No'], ['id' => 1, 'value' => 'Yes']];
     }
 
-
-
+    /**
+     * Before saving a source, all the other sources with isPrimary value 1
+     * are changed to isPrimary value 0. Only executes when the source being saved has a
+     * isPrimary value of 1
+     * */
     public function beforeSave($insert)
     {
         parent::beforeSave($insert);
-        $allSourcesUpdated=true;
-        if($this->isPrimary==1){
-            $isPrimarySources=Sources::findAll(['isPrimary'=>1]);
-            foreach ($isPrimarySources as $source){
-                $source->isPrimary=0;
-                if(!$source->save()){
-                    $allSourcesUpdated=false;
+        $allSourcesUpdated = true;
+        if ($this->isPrimary == self::SOURCE_IS_PRIMARY) {
+            $isPrimarySources = Sources::findAll(['isPrimary' => self::SOURCE_IS_PRIMARY]);
+            foreach ($isPrimarySources as $source) {
+                $source->isPrimary = self::SOURCE_IS_NOT_PRIMARY;
+                if (!$source->save()) {
+                    $allSourcesUpdated = false;
                 }
             }
 

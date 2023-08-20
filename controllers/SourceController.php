@@ -78,8 +78,8 @@ class SourceController extends Controller
                 if ($model->load($this->request->post()) && $model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
-            }catch(\Throwable $modelError){
-                Yii::$app->session->setFlash('danger',$modelError->getMessage());
+            } catch (\Throwable $modelError) {
+                Yii::$app->session->setFlash('danger', $modelError->getMessage());
             }
         } else {
             $model->loadDefaultValues();

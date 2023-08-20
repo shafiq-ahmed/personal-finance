@@ -163,6 +163,11 @@ class Expense extends ActiveRecord
         return self::find()->where('isPaid=0')->sum('amount');
     }
 
+    /**
+     * Executes after an expense payment is made, when the expense model is updated.
+     * After the expense model is saved, the relational source model is updated.
+     * And the method records the transaction in the transaction table.
+    */
     public function afterSave($insert, $changedAttributes)
     {
         $insert = false;
