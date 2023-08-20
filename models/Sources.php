@@ -84,7 +84,7 @@ class Sources extends \yii\db\ActiveRecord
                     $allSourcesUpdated = false;
                 }
             }
-
+        //how should the error message be sent to the controller and shown to the user
         }
         return $allSourcesUpdated;
     }

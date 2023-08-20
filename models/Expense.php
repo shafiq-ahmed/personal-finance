@@ -3,10 +3,8 @@
 namespace app\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Exception;
 use yii\db\Expression;
 
 /**
@@ -167,26 +165,23 @@ class Expense extends ActiveRecord
      * Executes after an expense payment is made, when the expense model is updated.
      * After the expense model is saved, the relational source model is updated.
      * And the method records the transaction in the transaction table.
-    */
+     */
     public function afterSave($insert, $changedAttributes)
     {
-        $insert = false;
-        $isSave = false;
-        parent::afterSave($insert, $changedAttributes);
         $this->sourceModel->currentBalance -= $this->amount;
-        if ($this->sourceModel->save()) {
-            $transactionModel = new Transactions();
-            $transactionModel->sourceId = $this->sourceModel->id;
-            $transactionModel->expenseId = $this->id;
-            $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
-            if ($transactionModel->save()) {
-                $isSave = true;
-            }
+
+        if (!$this->sourceModel->save()) {
+            throw new \Exception(json_encode($this->sourceModel->errors));
         }
 
-        if (!$isSave) {
-            throw new Exception('Model Save failed');
+        $transactionModel = new Transactions();
+        $transactionModel->sourceId = $this->sourceModel->id;
+        $transactionModel->expenseId = $this->id;
+        $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
+        if (!$transactionModel->save()) {
+            throw  new \Exception(json_encode($transactionModel->errors));
         }
+        parent::afterSave(false, $changedAttributes);
     }
 
 
