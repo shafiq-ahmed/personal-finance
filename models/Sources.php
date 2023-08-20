@@ -30,9 +30,9 @@ class Sources extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','currentBalance'], 'required'],
             [['isPrimary'], 'integer'],
-            [['currentBalance'], 'number'],
+            [['currentBalance'], 'number','min'=>500],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -63,5 +63,24 @@ class Sources extends \yii\db\ActiveRecord
     {
         //TODO: find alternative usage for IS_PRIMARY const
         return [['id'=>0,'value'=>'No'],['id'=>1,'value'=>'Yes']];
+    }
+
+
+
+    public function beforeSave($insert)
+    {
+        parent::beforeSave($insert);
+        $allSourcesUpdated=true;
+        if($this->isPrimary==1){
+            $isPrimarySources=Sources::findAll(['isPrimary'=>1]);
+            foreach ($isPrimarySources as $source){
+                $source->isPrimary=0;
+                if(!$source->save()){
+                    $allSourcesUpdated=false;
+                }
+            }
+
+        }
+        return $allSourcesUpdated;
     }
 }
