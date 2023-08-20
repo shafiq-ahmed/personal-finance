@@ -156,8 +156,14 @@ class ExpenseController extends Controller
 
             try {
                 //if it is a post request
-                $isSave = false;
                 if ($model->save()) {
+                    $transaction->commit();
+                    return $this->render('view', [
+                        'model' => $model,
+                        'sourceName' => $model->sourceModel->name
+                    ]);
+                }
+                /*if ($model->save()) {
                     //$sourceModel = Sources::findOne($model->source);
                     $model->sourceModel->currentBalance -= $model->amount;
                     if ($model->sourceModel->save()) {
@@ -169,24 +175,13 @@ class ExpenseController extends Controller
                             $isSave = true;
                         }
                     }
-                }
-
-                if ($isSave) {
-                    $transaction->commit();
-                } else {
-                    $transaction->rollBack();
-                }
+                }*/
 
             } catch (\Throwable $modelOperationError) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('danger', $modelOperationError->getMessage());
             }
 
-            //update source table after deduction
-            return $this->render('view', [
-                'model' => $model,
-                'sourceName' => $sourceModel->name
-            ]);
         }
 
         return $this->render('payment', [

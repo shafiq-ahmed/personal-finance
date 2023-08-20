@@ -109,7 +109,7 @@ class Expense extends ActiveRecord
 
     public function checkSufficientBalance($attribute, $params)
     {
-        if(!$this->isNewRecord){
+        if (!$this->isNewRecord) {
             $sourceModel = Sources::findOne($this->source);
             if ($this->amount > ($sourceModel->currentBalance - self::MINIMUM_AMOUNT)) {
                 $this->addError($attribute, Yii::t('user', 'You entered an invalid date format.'));
@@ -161,6 +161,27 @@ class Expense extends ActiveRecord
     public static function getTotalOutstandingAmount()
     {
         return self::find()->where('isPaid=0')->sum('amount');
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $insert = false;
+        $isSave = false;
+        parent::afterSave($insert, $changedAttributes);
+        $this->sourceModel->currentBalance -= $this->amount;
+        if ($this->sourceModel->save()) {
+            $transactionModel = new Transactions();
+            $transactionModel->sourceId = $this->sourceModel->id;
+            $transactionModel->expenseId = $this->id;
+            $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
+            if ($transactionModel->save()) {
+                $isSave = true;
+            }
+        }
+
+        if (!$isSave) {
+            throw new Exception('Model Save failed');
+        }
     }
 
 
