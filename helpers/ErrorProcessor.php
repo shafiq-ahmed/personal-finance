@@ -13,10 +13,10 @@ class ErrorProcessor
      * */
     public static function arrayToString(array $errors)
     {
-        $errorMessage='';
-        foreach ($errors as $error){
-            foreach ($error as $errorText){
-                $errorMessage.=$errorText.'<br>';
+        $errorMessage = '';
+        foreach ($errors as $error) {
+            foreach ($error as $errorText) {
+                $errorMessage .= $errorText . '<br>';
             }
         }
 

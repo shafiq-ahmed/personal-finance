@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\helpers\ErrorProcessor;
 use Yii;
 
 /**
@@ -70,5 +71,21 @@ class Transactions extends \yii\db\ActiveRecord
     public function getSource()
     {
         return $this->hasOne(Sources::class, ['id' => 'sourceId']);
+    }
+
+    /**
+     * Saves the transaction data after expense payment is completed
+     * and source table is updated
+     * */
+    public static function saveExpenseTransaction($sourceId, $expenseId)
+    {
+        $transaction = new  Transactions();
+        $transaction->sourceId = $sourceId;
+        $transaction->expenseId = $expenseId;
+        $transaction->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
+        if (!$transaction->save()) {
+            throw  new \Exception(ErrorProcessor::arrayToString($transaction->errors));
+        }
+
     }
 }

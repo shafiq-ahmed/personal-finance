@@ -174,14 +174,7 @@ class Expense extends ActiveRecord
         if (!$this->sourceModel->save()) {
             throw new \Exception(ErrorProcessor::arrayToString($this->sourceModel->errors));
         }
-
-        $transactionModel = new Transactions();
-        $transactionModel->sourceId = $this->sourceModel->id;
-        $transactionModel->expenseId = null;
-        $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
-        if (!$transactionModel->save()) {
-            throw  new \Exception(ErrorProcessor::arrayToString($transactionModel->errors));
-        }
+        Transactions::saveExpenseTransaction($this->sourceModel->id, $this->id);
         parent::afterSave(false, $changedAttributes);
     }
 
