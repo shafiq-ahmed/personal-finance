@@ -29,27 +29,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                    'attribute'=>'expenseId',
-                    'label'=>'Expense amount',
-                    'value'=>'expense.amount'
+                'attribute' => 'expenseId',
+                'label' => 'Expense amount',
+                'value' => 'expense.amount'
             ],
             [
-                    'attribute'=>'sourceId',
-                    'label'=>'Source',
-                    'value'=>'source.name'
+                'attribute' => 'source.name',
+                'label' => 'Source',
+                'value' => 'source.name',
+
             ],
             [
-                    'attribute'=>'createdAt',
-                    'value'=>function($model)
-                    {
-                        return date('d-M-Y h:m:s',strtotime($model->createdAt));
-                    }
+                'attribute' => 'createdAt',
+                'value' => function ($model) {
+                    return date('d-M-Y h:m:s', strtotime($model->createdAt));
+                }
             ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Transactions $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>
