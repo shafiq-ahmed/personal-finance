@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\helpers\ErrorProcessor;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -171,15 +172,15 @@ class Expense extends ActiveRecord
         $this->sourceModel->currentBalance -= $this->amount;
 
         if (!$this->sourceModel->save()) {
-            throw new \Exception(json_encode($this->sourceModel->errors));
+            throw new \Exception(ErrorProcessor::arrayToString($this->sourceModel->errors));
         }
 
         $transactionModel = new Transactions();
         $transactionModel->sourceId = $this->sourceModel->id;
-        $transactionModel->expenseId = $this->id;
+        $transactionModel->expenseId = null;
         $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
         if (!$transactionModel->save()) {
-            throw  new \Exception(json_encode($transactionModel->errors));
+            throw  new \Exception(ErrorProcessor::arrayToString($transactionModel->errors));
         }
         parent::afterSave(false, $changedAttributes);
     }
