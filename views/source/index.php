@@ -1,14 +1,14 @@
 <?php
 
 use app\models\Sources;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\models\SourcesSearch $searchModel */
+/** @var \app\models\search\SourcesSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Sources';

@@ -1,15 +1,15 @@
 <?php
 
-namespace app\models;
+namespace app\models\search;
 
+use app\models\Sources;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Earnings;
 
 /**
- * EarningsSearch represents the model behind the search form of `app\models\Earnings`.
+ * SourcesSearch represents the model behind the search form of `app\models\Sources`.
  */
-class EarningsSearch extends Earnings
+class SourcesSearch extends Sources
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,9 @@ class EarningsSearch extends Earnings
     public function rules()
     {
         return [
-            [['id', 'source'], 'integer'],
-            [['previousBalance', 'inflowAmount'], 'number'],
-            [['inflowDescription', 'createdAt'], 'safe'],
+            [['id', 'isPrimary'], 'integer'],
+            [['name'], 'safe'],
+            [['currentBalance'], 'number'],
         ];
     }
 
@@ -41,7 +41,7 @@ class EarningsSearch extends Earnings
      */
     public function search($params)
     {
-        $query = Earnings::find();
+        $query = Sources::find();
 
         // add conditions that should always apply here
 
@@ -60,13 +60,11 @@ class EarningsSearch extends Earnings
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'source' => $this->source,
-            'previousBalance' => $this->previousBalance,
-            'inflowAmount' => $this->inflowAmount,
-            'createdAt' => $this->createdAt,
+            'isPrimary'=>$this->isPrimary
         ]);
 
-        $query->andFilterWhere(['like', 'inflowDescription', $this->inflowDescription]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+                ->andFilterWhere(['<=','currentBalance',$this->currentBalance]);
 
         return $dataProvider;
     }

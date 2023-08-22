@@ -3,13 +3,10 @@
 namespace app\controllers;
 
 use app\models\Earnings;
-use app\models\EarningsSearch;
-use app\models\Sources;
-use yii\data\ActiveDataProvider;
-use yii\db\Exception;
+use app\models\search\EarningsSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * EarningsController implements the CRUD actions for Earnings model.

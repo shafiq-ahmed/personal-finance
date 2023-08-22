@@ -2,11 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\search\TransactionsSearch;
 use app\models\Transactions;
-use app\models\TransactionsSearch;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * TransactionsController implements the CRUD actions for Transactions model.

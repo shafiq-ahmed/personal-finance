@@ -2,13 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\search\SourcesSearch;
 use app\models\Sources;
-use app\models\SourcesSearch;
 use Yii;
-use yii\db\Exception;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * SourceController implements the CRUD actions for Sources model.

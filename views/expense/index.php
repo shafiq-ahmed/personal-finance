@@ -2,14 +2,14 @@
 
 use app\models\Expense;
 use app\models\Sources;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var app\models\ExpenseSearch $searchModel */
+/** @var \app\models\search\ExpenseSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Expenses';

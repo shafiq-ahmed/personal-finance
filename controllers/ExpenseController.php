@@ -4,16 +4,11 @@ namespace app\controllers;
 
 use app\models\AddExpenseJob;
 use app\models\Expense;
-use app\models\ExpenseSearch;
-use app\models\Sources;
-use app\models\Transactions;
-use Cassandra\Time;
+use app\models\search\ExpenseSearch;
 use Yii;
-use yii\db\Exception;
-use yii\db\Expression;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ExpenseController implements the CRUD actions for Expense model.
@@ -109,8 +104,6 @@ class ExpenseController extends Controller
                 Yii::$app->session->setFlash('danger', $modelSaveError->getMessage());
             }
 
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [

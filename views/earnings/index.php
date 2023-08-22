@@ -1,13 +1,13 @@
 <?php
 
 use app\models\Earnings;
-use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
-/** @var app\models\EarningsSearch $searchModel */
+/** @var \app\models\search\EarningsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Earnings';
