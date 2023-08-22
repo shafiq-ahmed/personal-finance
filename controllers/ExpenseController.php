@@ -139,11 +139,9 @@ class ExpenseController extends Controller
         if ($this->request->isPost) {
 
             $model->load($this->request->post());
-            //Source must have minimum 500tk after payment
-            //otherwise payment is denied and shown flash error message
             //TODO: Validate database entries
 
-            //Deduce payment from source balance
+
             //set isPaid to 1 after successful payment
             $model->isPaid = 1;
 
@@ -163,20 +161,6 @@ class ExpenseController extends Controller
                         'sourceName' => $model->sourceModel->name
                     ]);
                 }
-                /*if ($model->save()) {
-                    //$sourceModel = Sources::findOne($model->source);
-                    $model->sourceModel->currentBalance -= $model->amount;
-                    if ($model->sourceModel->save()) {
-                        $transactionModel = new Transactions();
-                        $transactionModel->sourceId = $model->sourceModel->id;
-                        $transactionModel->expenseId = $model->id;
-                        $transactionModel->createdAt = date('Y-m-d H:i:s', strtotime('+6 hours'));
-                        if ($transactionModel->save()) {
-                            $isSave = true;
-                        }
-                    }
-                }*/
-
             } catch (\Throwable $modelOperationError) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('danger', $modelOperationError->getMessage());

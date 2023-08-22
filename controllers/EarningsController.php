@@ -77,23 +77,17 @@ class EarningsController extends Controller
         $model = new Earnings();
 
         if ($this->request->isPost) {
+            $transaction=\Yii::$app->db->beginTransaction();
             try {
                 if ($model->load($this->request->post())) {
-                    //set previous balance from source
-                    $model->previousBalance = $model->sourceModel->currentBalance;
-                    //update current balance of source
-                    $model->sourceModel->currentBalance += $model->inflowAmount;
-                    //save updated value
-                    $model->sourceModel->save();
                     $model->save();
-
+                    $transaction->commit();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }catch (\Throwable $modelSaveError){
+                $transaction->rollback();
                 \Yii::$app->session->setFlash('danger',$modelSaveError->getMessage());
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [

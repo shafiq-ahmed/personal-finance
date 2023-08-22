@@ -169,6 +169,7 @@ class Expense extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        //TODO: validate expense amount in rules, whether amount is payable by currentbalance
         $this->sourceModel->currentBalance -= $this->amount;
 
         if (!$this->sourceModel->save()) {
