@@ -19,8 +19,9 @@ class Sources extends \yii\db\ActiveRecord
      */
 
     const IS_PRIMARY = [1 => 'Yes', 0 => 'No'];
-    const SOURCE_IS_PRIMARY=1;
-    const SOURCE_IS_NOT_PRIMARY=0;
+    const SOURCE_IS_PRIMARY = 1;
+    const SOURCE_IS_NOT_PRIMARY = 0;
+
     public static function tableName()
     {
         return 'sources';
@@ -61,7 +62,7 @@ class Sources extends \yii\db\ActiveRecord
      * Returns all the possible isPrimary values as key value pairs
      * @return array[]
      */
-    public static function getAllIsPrimaryKeyValues()
+    public static function getAllIsPrimaryKeyValues(): array
     {
         //TODO: find alternative usage for IS_PRIMARY const
         return [['id' => 0, 'value' => 'No'], ['id' => 1, 'value' => 'Yes']];
@@ -74,18 +75,20 @@ class Sources extends \yii\db\ActiveRecord
      * */
     public function beforeSave($insert)
     {
-        parent::beforeSave($insert);
-        $allSourcesUpdated = true;
+
+        $isSourcesUpdated = true;
         if ($this->isPrimary == self::SOURCE_IS_PRIMARY) {
-            $isPrimarySources = Sources::findAll(['isPrimary' => self::SOURCE_IS_PRIMARY]);
-            foreach ($isPrimarySources as $source) {
-                $source->isPrimary = self::SOURCE_IS_NOT_PRIMARY;
-                if (!$source->save()) {
-                    $allSourcesUpdated = false;
+            $isPrimarySources = Sources::find()->where(['isPrimary' => self::SOURCE_IS_PRIMARY])->all();
+            foreach ($isPrimarySources as $primarySource) {
+                $primarySource->isPrimary = self::SOURCE_IS_NOT_PRIMARY;
+                if (!$primarySource->save()) {
+                    $isSourcesUpdated = false;
+                    break;
                 }
             }
-        //how should the error message be sent to the controller and shown to the user
+            //how should the error message be sent to the controller and shown to the user
         }
-        return $allSourcesUpdated;
+        parent::beforeSave($insert);
+        return $isSourcesUpdated;
     }
 }
