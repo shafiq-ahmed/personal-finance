@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'name',
             ['attribute'=>'source',
-                'value'=>$sourceName,
+                'value'=>$model->sourceModel->name,
             ],
             'amount',
             'month',

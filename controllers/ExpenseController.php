@@ -66,12 +66,10 @@ class ExpenseController extends Controller
     {
 
 
-        $model = Expense::findOne($id);
+        $model = Expense::find()->where("expense.id=$id")->joinWith('sourceModel')->one();
         //lazily load source model
-        $source = $model->sourceModel;
         return $this->render('view', [
-            'model' => $model,
-            'sourceName' => $source ? $source->name : null
+            'model' => $model
         ]);
     }
 
