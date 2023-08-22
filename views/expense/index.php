@@ -26,12 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);
     //
 
-     ?>
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'showFooter'=>true,
+        'showFooter' => true,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -40,34 +40,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             [
-                'attribute'=>'source',
-                'value'=>'sourceModel.name',
-                'filter'=>ArrayHelper::  map(Sources::find()->all(),'id', 'name'),
+                'attribute' => 'source',
+                'value' => 'sourceModel.name',
+                'filter' => ArrayHelper::  map(Sources::find()->all(), 'id', 'name'),
             ],
             [
-                    'attribute'=>'amount',
-                    'footer'=>'Total Outstanding: '.Expense::getTotalOutstandingAmount(),
-                    'footerOptions' => [
-                        'class' => 'not-set', // add css class for label // add style for label
-                        'content' => 'Total Outstanding:', // add content for label
-                    ],
+                'attribute' => 'amount',
+                'footer' => 'Total Outstanding: ' . Expense::getTotalOutstandingAmount(),
+                'footerOptions' => [
+                    'class' => 'not-set', // add css class for label // add style for label
+                    'content' => 'Total Outstanding:', // add content for label
+                ],
             ],
             [
-                    'attribute'=>'month',
-                    'filter'=>ArrayHelper::map(Expense::find()->select('month')->distinct()->all(),'month','month'),
+                'attribute' => 'month',
+                'filter' => ArrayHelper::map(Expense::getMonths(), 'name', 'name')
 
             ],
             //'expenseDate',
             //'createdAt',
             [
-                    'attribute'=>'isPaid',
-                    'label'=>'Payment Status',
-                    'value'=>function($model)
-                    {
-                        return Expense::IS_PAID[$model->isPaid]??'N/A';
-                    },
-                    'filter'=>ArrayHelper::map(array(['id'=>1,'value'=>'Paid'],['id'=>0,'value'=>'Unpaid']),'id','value')
-                    //'filter'=>ArrayHelper::map()
+                'attribute' => 'isPaid',
+                'label' => 'Payment Status',
+                'value' => function ($model) {
+                    return Expense::IS_PAID[$model->isPaid] ?? 'N/A';
+                },
+                'filter' => ArrayHelper::map(array(['id' => 1, 'value' => 'Paid'], ['id' => 0, 'value' => 'Unpaid']), 'id', 'value')
+                //'filter'=>ArrayHelper::map()
 
             ],
 
@@ -76,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Expense $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

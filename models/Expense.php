@@ -179,5 +179,12 @@ class Expense extends ActiveRecord
         parent::afterSave(false, $changedAttributes);
     }
 
+    public static function getMonths()
+    {
+        return [['name' => 'January'], ['name' => 'February'], ['name' => 'March'], ['name' => 'April'], ['name' => 'May'],
+            ['name' => 'June'], ['name' => 'July'], ['name' => 'August'], ['name' => 'September'], ['name' => 'October'],
+            ['name' => 'November'], ['name' => 'December']];
+    }
+
 
 }
