@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'amount',
-                'footer' => 'Total Outstanding: ' . Expense::getTotalOutstandingAmount(),
+                'footer' => 'Total Outstanding: ' . Expense::getTotalOutstandingAmount($dataProvider->getModels()),
                 'footerOptions' => [
                     'class' => 'not-set', // add css class for label // add style for label
                     'content' => 'Total Outstanding:', // add content for label
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'isPaid',
                 'label' => 'Payment Status',
                 'value' => function ($model) {
-                    return Expense::IS_PAID[$model->isPaid] ?? 'N/A';
+                    return Expense::getIsPaidValue($model->isPaid);
                 },
                 'filter' => ArrayHelper::map(array(['id' => 1, 'value' => 'Paid'], ['id' => 0, 'value' => 'Unpaid']), 'id', 'value')
                 //'filter'=>ArrayHelper::map()

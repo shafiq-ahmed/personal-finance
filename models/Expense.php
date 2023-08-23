@@ -29,7 +29,9 @@ class Expense extends ActiveRecord
      * {@inheritdoc}
      */
     //isPaid data will be mapped to this constant in view page
-    const IS_PAID = [0 => 'Unpaid', 1 => 'Paid'];
+    //const IS_PAID = [0 => 'Unpaid', 1 => 'Paid'];
+    const EXPENSE_IS_PAID=1;
+    const EXPENSE_IS_UNPAID=0;
     const SCENARIO_CREATE = 'create';
     const SCENARIO_MAkE_PAYMENT = 'make_payment';
     /**
@@ -157,9 +159,15 @@ class Expense extends ActiveRecord
         return $this->hasOne(Sources::class, ['id' => 'source']);
     }
 
-    public static function getTotalOutstandingAmount()
+    public static function getTotalOutstandingAmount(array $models):int
     {
-        return self::find()->where('isPaid=0')->sum('amount');
+        $sum=0;
+        /*foreach ($models as $model){
+            if($model->isPaid==self::IS_PAID['Unpaid']){
+                $sum+=$model->amount;
+            }
+        }*/
+        return $sum;
     }
 
     /**
@@ -184,6 +192,18 @@ class Expense extends ActiveRecord
         return [['name' => 'January'], ['name' => 'February'], ['name' => 'March'], ['name' => 'April'], ['name' => 'May'],
             ['name' => 'June'], ['name' => 'July'], ['name' => 'August'], ['name' => 'September'], ['name' => 'October'],
             ['name' => 'November'], ['name' => 'December']];
+    }
+
+    /**
+     * Takes the isPaid value from caller and returns the corresponding value
+     * */
+    public static function getIsPaidValue(int $value, string $paidText='Paid', string $unpaidText='Unpaid'):string
+    {
+        if($value==self::EXPENSE_IS_PAID){
+            return $paidText;
+        }else if($value==self::EXPENSE_IS_UNPAID){
+            return $unpaidText;
+        }else return 'N/A';
     }
 
 
