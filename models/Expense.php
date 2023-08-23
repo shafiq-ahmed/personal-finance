@@ -162,11 +162,11 @@ class Expense extends ActiveRecord
     public static function getTotalOutstandingAmount(array $models):int
     {
         $sum=0;
-        /*foreach ($models as $model){
-            if($model->isPaid==self::IS_PAID['Unpaid']){
+        foreach ($models as $model){
+            if($model->isPaid==self::EXPENSE_IS_UNPAID){
                 $sum+=$model->amount;
             }
-        }*/
+        }
         return $sum;
     }
 
