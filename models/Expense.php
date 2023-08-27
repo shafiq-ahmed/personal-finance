@@ -30,8 +30,8 @@ class Expense extends ActiveRecord
      */
     //isPaid data will be mapped to this constant in view page
     //const IS_PAID = [0 => 'Unpaid', 1 => 'Paid'];
-    const EXPENSE_IS_PAID=1;
-    const EXPENSE_IS_UNPAID=0;
+    const EXPENSE_IS_PAID = 1;
+    const EXPENSE_IS_UNPAID = 0;
     const SCENARIO_CREATE = 'create';
     const SCENARIO_MAkE_PAYMENT = 'make_payment';
     /**
@@ -159,12 +159,12 @@ class Expense extends ActiveRecord
         return $this->hasOne(Sources::class, ['id' => 'source']);
     }
 
-    public static function getTotalOutstandingAmount(array $models):int
+    public static function getTotalOutstandingAmount(array $models): int
     {
-        $sum=0;
-        foreach ($models as $model){
-            if($model->isPaid==self::EXPENSE_IS_UNPAID){
-                $sum+=$model->amount;
+        $sum = 0;
+        foreach ($models as $model) {
+            if ($model->isPaid == self::EXPENSE_IS_UNPAID) {
+                $sum += $model->amount;
             }
         }
         return $sum;
@@ -195,15 +195,15 @@ class Expense extends ActiveRecord
     }
 
     /**
-     * Takes the isPaid value from caller and returns the corresponding value
+     * Takes the isPaid value from and returns the corresponding int value
      * */
-    public static function getIsPaidValue(int $value, string $paidText='Paid', string $unpaidText='Unpaid'):string
+    public static function getIsPaidValue(int $value, string $paidText = 'Paid', string $unpaidText = 'Unpaid'): string
     {
-        if($value==self::EXPENSE_IS_PAID){
+        if ($value == self::EXPENSE_IS_PAID) {
             return $paidText;
-        }else if($value==self::EXPENSE_IS_UNPAID){
+        } else if ($value == self::EXPENSE_IS_UNPAID) {
             return $unpaidText;
-        }else return 'N/A';
+        } else return 'N/A';
     }
 
 
