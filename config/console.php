@@ -13,7 +13,15 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+    'modules' => [
+        'rbac' => [
+            'class' => 'yii2mod\rbac\Module',
+        ],
+    ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -35,13 +43,11 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    /*
+
     'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
-        ],
+        'rbac' => 'app\controllers\RbacController', // Use to initialize RBAC tables provided by Yii.
     ],
-    */
+
 ];
 
 if (YII_ENV_DEV) {
