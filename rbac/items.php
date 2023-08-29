@@ -9,7 +9,7 @@ return [
         'type' => 2,
         'description' => 'Update post',
     ],
-    'author' => [
+    'user' => [
         'type' => 1,
         'children' => [
             'createPost',
@@ -19,7 +19,7 @@ return [
         'type' => 1,
         'children' => [
             'updatePost',
-            'author',
+            'user',
         ],
     ],
 ];
