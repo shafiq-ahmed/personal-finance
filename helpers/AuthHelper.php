@@ -6,9 +6,10 @@ use Yii;
 
 class AuthHelper
 {
-    public static function assignUserRole(int $userId)
+    public static function assignRole(string $role,int $userId)
     {
         $auth = Yii::$app->authManager;
-        $auth->assign($auth->getRole('user'), $userId);
+        $auth->assign($auth->getRole($role), $userId);
     }
+
 }

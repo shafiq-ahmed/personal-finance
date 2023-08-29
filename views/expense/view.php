@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'name',
             ['attribute'=>'source',
-                'value'=>$model->sourceModel->name,
+                'value'=>$model->sourceModel->name??'N/A',
             ],
             'amount',
             'month',
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'isPaid',
                 'label'=>'Payment Status',
                 'value' => function ($model) {
-                    return Expense::IS_PAID[$model->isPaid] ?? 'N/A';
+                    return Expense::getIsPaidValue($model->isPaid) ?? 'N/A';
                 }
             ]
         ],

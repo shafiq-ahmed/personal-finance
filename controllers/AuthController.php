@@ -8,6 +8,7 @@ use yii\web\Controller;
 
 class AuthController extends Controller
 {
+    private const ROLE_USER='user';
     public function actionSignup()
     {
         $user= new Users();
@@ -15,7 +16,7 @@ class AuthController extends Controller
         try {
             if ($this->request->isPost && $user->load($this->request->post())) {
                 $user->save();
-                AuthHelper::assignUserRole($user->id);
+                AuthHelper::assignRole(self::ROLE_USER,$user->id);
                 $this->redirect(['expense/index']);
             }
         }catch (\Throwable $userSaveError)

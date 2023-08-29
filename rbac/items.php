@@ -1,25 +1,19 @@
 <?php
 
 return [
-    'createPost' => [
+    'createExpense' => [
         'type' => 2,
-        'description' => 'Create a post',
+        'description' => 'Create Expense Record',
     ],
-    'updatePost' => [
+    'createEarning' => [
         'type' => 2,
-        'description' => 'Update post',
+        'description' => 'Create Earnings Record',
     ],
     'user' => [
         'type' => 1,
         'children' => [
-            'createPost',
-        ],
-    ],
-    'admin' => [
-        'type' => 1,
-        'children' => [
-            'updatePost',
-            'user',
+            'createExpense',
+            'createEarning',
         ],
     ],
 ];
