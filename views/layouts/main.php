@@ -43,6 +43,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Expenses', 'url' => ['/expense/index']],
             ['label' => 'Earnings', 'url' => ['/earnings/index']],
             ['label' => 'Transactions', 'url' => ['/transactions/index']],
+            ['label'=> 'SignUp','url'=>'/rbac/signup'],
+            ['label'=>'Login','url'=>'/rbac/login']
         ]
     ]);
     NavBar::end();

@@ -45,7 +45,7 @@ $config = [
     'params' => $params,
 
     'controllerMap' => [
-        'rbac' => 'app\controllers\RbacController', // Use to initialize RBAC tables provided by Yii.
+        'rbac' => 'app\commands\RbacController', // Use to initialize RBAC tables provided by Yii.
     ],
 
 ];
