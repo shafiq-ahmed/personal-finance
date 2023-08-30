@@ -6,7 +6,9 @@ use app\models\AddExpenseJob;
 use app\models\Expense;
 use app\models\search\ExpenseSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -31,7 +33,25 @@ class ExpenseController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+            ],
+            ['access'=>[
+                'class'=>AccessControl::class,
+                'rules'=>[
+                    [
+                        'allow'=>true,
+                        'actions'=>['create'],
+                        'roles'=>['user'],
+                    ],
+                ],
+                'denyCallback' => function ($rule, $action) {
+                    $url = Url::to(['/source/index']);
+                    return $this->redirect($url);
+                }
+
             ]
+
+            ]
+
         );
     }
 
