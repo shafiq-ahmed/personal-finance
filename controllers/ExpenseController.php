@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\AddExpenseJob;
 use app\models\Expense;
 use app\models\search\ExpenseSearch;
+use app\models\Users;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -24,6 +25,8 @@ class ExpenseController extends Controller
 
     public function behaviors()
     {
+        $user=Users::findOne(['id'=>4]);
+        Yii::$app->user->setIdentity($user);
         return array_merge(
             parent::behaviors(),
             [
@@ -36,10 +39,11 @@ class ExpenseController extends Controller
             ],
             ['access'=>[
                 'class'=>AccessControl::class,
+
                 'rules'=>[
                     [
                         'allow'=>true,
-                        'actions'=>['create'],
+                        'actions'=>['create','index'],
                         'roles'=>['user'],
                     ],
                 ],

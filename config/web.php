@@ -13,9 +13,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'modules' => [
-        'rbac' => [
-            'class' => 'yii2mod\rbac\Module',
-        ],
+
     ],
     'components' => [
         'authManager' => [
@@ -36,7 +34,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [

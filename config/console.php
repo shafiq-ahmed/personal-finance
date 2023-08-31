@@ -13,11 +13,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
-    'modules' => [
-        'rbac' => [
-            'class' => 'yii2mod\rbac\Module',
-        ],
-    ],
+
     'components' => [
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
@@ -41,6 +37,10 @@ $config = [
             ],
         ],
         'db' => $db,
+        'user' => [
+            'identityClass' => 'app\models\Users',
+            'enableAutoLogin' => true,
+        ],
     ],
     'params' => $params,
 

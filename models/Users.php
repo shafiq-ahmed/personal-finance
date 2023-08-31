@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "users".
@@ -11,8 +13,9 @@ use Yii;
  * @property string|null $name
  * @property string|null $created_at
  */
-class Users extends \yii\db\ActiveRecord
+class Users extends ActiveRecord implements IdentityInterface
 {
+    public $id=8;
     /**
      * {@inheritdoc}
      */
@@ -42,5 +45,54 @@ class Users extends \yii\db\ActiveRecord
             'name' => 'Name',
             'created_at' => 'Created At',
         ];
+    }
+
+    /**
+     * @param $id
+     * @return IdentityInterface|null
+     */
+    public static function findIdentity($id)
+    {
+        // TODO: Implement findIdentity() method.
+        return self::findOne(['id'=>$id]);
+    }
+
+    /**
+     * @param $token
+     * @param $type
+     * @return IdentityInterface|null
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        // TODO: Implement findIdentityByAccessToken() method.
+        return self::findOne(['access_token'=>$token]);
+    }
+
+    /**
+     * @return int|string
+     */
+    public function getId()
+    {
+        // TODO: Implement getId() method.
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
+        return $this->auth_key;
+    }
+
+    /**
+     * @param $authKey
+     * @return bool|null
+     */
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
+        return $this->getAuthKey()===$authKey;
     }
 }
